@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MERAB & BRIAN CINEMA SYSTEM 2025 — External Link Mode</title>
+<meta name="theme-color" content="#0b1020"/>
+<style>
+  :root{
+    --accent:#ff4d4f; --accent2:#ff8a3d;
+    --bg-img: url("https://files.catbox.moe/b2xl1t.jpg");
+    --muted: rgba(255,255,255,0.86);
+    --glass: rgba(255,255,255,0.03);
+    --surface: rgba(6,8,12,0.72);
+    --radius:12px; --maxw:1400px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;background:var(--bg-img) center/cover fixed no-repeat;color:#fff}
+  .app{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.5))}
+  header{position:sticky;top:0;z-index:120;display:flex;align-items:center;padding:10px 16px;background:linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.04));backdrop-filter:blur(4px);border-bottom:1px solid rgba(255,255,255,0.03)}
+  .header-left{display:flex;align-items:center;gap:12px}
+  .sys-title{font-weight:800;font-size:18px}
+  .ticker{font-size:12px;color:var(--muted);margin-left:12px;overflow:hidden;white-space:nowrap;max-width:420px}
+  .ticker span{display:inline-block;padding-left:100%;animation:scrollt 14s linear infinite}
+  @keyframes scrollt{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+  .profile-wrap{margin-left:auto;display:flex;flex-direction:column;align-items:center}
+  .profile{width:68px;height:68px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);box-shadow:0 12px 36px rgba(0,0,0,0.6);transform-origin:center;animation:rotate360 12s linear infinite}
+  .profile img{width:100%;height:100%;object-fit:cover}
+  @keyframes rotate360{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+  .rings{position:relative;width:0;height:0}
+  .ring{position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,0.06);opacity:0;animation:wave 3s infinite}
+  .r1{width:86px;height:86px;left:-10px;top:-10px;animation-delay:0s}
+  .r2{width:112px;height:112px;left:-22px;top:-22px;animation-delay:.4s}
+  .r3{width:140px;height:140px;left:-36px;top:-36px;animation-delay:.8s}
+  @keyframes wave{0%{transform:scale(.3);opacity:0}40%{opacity:.16}100%{transform:scale(1.6);opacity:0}}
+  .quick-cats{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));border-bottom:1px solid rgba(255,255,255,0.02)}
+  .cat-btn{flex:0 0 auto;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:8px 12px;border-radius:999px;border:none;color:white;font-weight:700;cursor:pointer;white-space:nowrap}
+  .cat-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  main{flex:1;padding:14px 16px;max-width:var(--maxw);margin:0 auto;overflow:visible}
+  .hero{height:34vh;border-radius:12px;overflow:hidden;position:relative;background-size:cover;background-position:center;margin-bottom:14px;display:flex;align-items:flex-end}
+  .hero .overlay{width:100%;padding:18px;background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.7))}
+  .hero .title{font-size:24px;font-weight:800;margin:0}
+  .hero .sub{color:var(--muted);margin-top:8px;max-width:60%}
+  .hero .actions{margin-top:10px;display:flex;gap:8px}
+  .section{margin-bottom:22px}
+  .section .head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .section .head h3{margin:0;font-size:18px}
+  .carousel{position:relative}
+  .row{display:flex;gap:12px;overflow-x:auto;padding:8px 4px;scroll-behavior:smooth}
+  .row::-webkit-scrollbar{height:10px}
+  .row::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:6px}
+  .card{min-width:160px;flex:0 0 160px;border-radius:10px;background:var(--surface);overflow:hidden;cursor:pointer;position:relative;transition:transform .18s,box-shadow .18s}
+  .card img{width:100%;height:230px;object-fit:cover;display:block}
+  .card .meta{padding:8px}
+  .card .title{font-weight:700;font-size:14px}
+  .card .sub{font-size:12px;color:var(--muted);margin-top:6px}
+  .card:hover{transform:translateY(-8px);box-shadow:0 22px 60px rgba(0,0,0,0.6)}
+  .arrow{position:absolute;top:36%;transform:translateY(-50%);width:44px;height:72px;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;z-index:50}
+  .arrow.left{left:6px} .arrow.right{right:6px}
+  .card-actions{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:8px;z-index:20}
+  .card-actions button{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;padding:6px;border-radius:8px;color:#fff;font-weight:700;cursor:pointer}
+  .player-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+  .player-box{width:95%;max-width:980px;background:linear-gradient(180deg, rgba(8,8,8,0.98), rgba(4,4,4,0.98));border-radius:10px;padding:12px}
+  .player-header{display:flex;justify-content:space-between;align-items:center}
+  .modal-back{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+  .modal-card{width:95%;max-width:900px;background:linear-gradient(180deg, rgba(10,10,10,0.98), rgba(6,6,6,0.98));border-radius:10px;padding:14px}
+  .detail-hero{padding:14px;border-radius:10px;background:var(--surface)}
+  footer{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.15));padding:10px;text-align:center;font-size:13px;border-top:1px solid rgba(255,255,255,0.03)}
+  @media(max-width:920px){
+    .hero{height:30vh}
+    .card{min-width:140px;flex:0 0 140px}
+    .card img{height:200px}
+  }
+  .spinner{width:40px;height:40px;border-radius:50%;border:5px solid rgba(255,255,255,0.08);border-top-color:var(--accent);animation:spin .9s linear infinite;margin:10px auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="header-left">
+      <div class="sys-title">MERAB & BRIAN CINEMA SYSTEM 2025</div>
+      <div class="ticker"><span>System Manager: 0799390998 • Developer: 0748950572 • MERAB & BRIAN SYSTEM 2025</span></div>
+    </div>
+
+    <div class="profile-wrap" aria-hidden="false">
+      <div class="rings">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+      </div>
+      <div class="profile" title="Profile">
+        <img src="https://files.catbox.moe/b2xl1t.jpg" alt="profile">
+      </div>
+    </div>
+  </header>
+
+  <div class="quick-cats" id="quickCats"></div>
+
+  <main id="main">
+    <div id="hero" class="hero" style="background:linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.7));">
+      <div class="overlay">
+        <div class="title" id="heroTitle">Loading featured...</div>
+        <div class="sub" id="heroSub">Top trending picks — click posters for details.</div>
+        <div class="actions" style="margin-top:12px">
+          <button class="cat-btn" id="heroWatchBtn">Watch</button>
+          <button class="cat-btn ghost" id="heroDownloadBtn">Download</button>
+          <button class="cat-btn ghost" id="heroTrailerBtn">Trailer</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="carouselsArea"></div>
+
+    <section id="details" style="display:none;margin-top:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <button class="cat-btn ghost small" onclick="showSection('home')">← Back</button>
+        <h2 id="detailTitle">Details</h2>
+      </div>
+      <div id="detailContainer" class="detail-hero"></div>
+      <div id="detailCast" style="margin-top:12px"></div>
+      <div id="detailSimilar" style="margin-top:12px"></div>
+    </section>
+
+    <section id="watchlist" style="display:none;margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h2>Watchlist</h2>
+        <div style="display:flex;gap:8px">
+          <button class="cat-btn ghost" onclick="importWatchlist()">Import</button>
+          <button class="cat-btn" onclick="exportWatchlist()">Export</button>
+          <button class="cat-btn ghost" onclick="clearWatchlist()">Clear</button>
+        </div>
+      </div>
+      <div id="watchlistArea" class="row"></div>
+    </section>
+
+    <section id="favorites" style="display:none;margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h2>Favorites</h2>
+        <div style="display:flex;gap:8px">
+          <button class="cat-btn ghost" onclick="clearFavorites()">Clear</button>
+        </div>
+      </div>
+      <div id="favoritesArea" class="row"></div>
+    </section>
+
+    <section id="trending" style="display:none;margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h2>Trending (Full)</h2>
+        <button class="cat-btn ghost" onclick="loadCategory('trending')">Refresh</button>
+      </div>
+      <div id="trendingGrid" class="row"></div>
+    </section>
+  </main>
+
+  <footer>@MERAB & BRIAN SYSTEM 2025</footer>
+</div>
+
+<!-- trailer modal -->
+<div id="trailerModal" class="modal-back" style="display:none;align-items:center;justify-content:center">
+  <div class="modal-card" id="trailerCard"></div>
+</div>
+
+<!-- lightweight modal root -->
+<div id="modalRoot" style="display:none"></div>
+
+<script>
+/* ================= CONFIG (paste your API keys & external link mapping) ================= */
+
+/* TMDb/OMDb keys (metadata & trailers) */
+const TMDB_API_KEY = "4f2372847d0483ed10dac1fcad73ef66"; // required for metadata
+const OMDB_API_KEY  = "d74762c6"; // optional for ratings
+
+/* EXTERNAL WATCH/DOWNLOAD LINKS (YOU MUST FILL THESE WITH LEGAL LINKS)
+   Approach:
+    - Provide per-movie links using TMDb movie id as the key:
+        MOVIE_EXTERNAL_LINKS["550"] = { watch: "https://yourhost.com/watch/550", download: "https://yourhost.com/downloads/550.mp4" }
+    - If a movie id has no mapping, the app opens DEFAULT_EXTERNAL_SITE.
+    - Make sure links you add are legal (your own hosted files, public domain, or licensed partners).
+*/
+const MOVIE_EXTERNAL_LINKS = {
+  // example:
+  // "550": { watch: "https://example.com/watch/550", download: "https://example.com/downloads/550.mp4" }
+};
+
+/* Fallback default external sites: must be legal sources you control or recommend */
+const DEFAULT_EXTERNAL_SITE = "https://archive.org/details/feature_films"; // sample public-domain site
+const DEFAULT_EXTERNAL_DOWNLOAD = "https://archive.org/details/feature_films"; // fallback for download (opens site)
+
+/* =============================================================================== */
+
+const IMG_BASE = "https://image.tmdb.org/t/p/w500";
+const PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image";
+
+/* App state */
+const state = {
+  recent: JSON.parse(localStorage.getItem('mb_recent') || '[]'),
+  watchlist: JSON.parse(localStorage.getItem('mb_watchlist') || '[]'),
+  favorites: JSON.parse(localStorage.getItem('mb_favorites') || '[]'),
+  savedTrailers: JSON.parse(localStorage.getItem('mb_saved_trailers') || '[]'),
+  adultUnlocked: JSON.parse(localStorage.getItem('mb_adultUnlocked') || '{}'),
+  current: null
+};
+
+/* Categories list (20+) */
+const CATEGORY_LIST = [
+  { key:'trending', title:'Trending' },
+  { key:'action', title:'Action' },
+  { key:'adventure', title:'Adventure' },
+  { key:'animation', title:'Animation' },
+  { key:'comedy', title:'Comedy' },
+  { key:'crime', title:'Crime' },
+  { key:'documentary', title:'Documentary' },
+  { key:'drama', title:'Drama' },
+  { key:'family', title:'Family' },
+  { key:'fantasy', title:'Fantasy' },
+  { key:'history', title:'History' },
+  { key:'horror', title:'Horror' },
+  { key:'music', title:'Music' },
+  { key:'mystery', title:'Mystery' },
+  { key:'romance', title:'Romance' },
+  { key:'sci-fi', title:'Sci-Fi' },
+  { key:'tv-movie', title:'TV Movie' },
+  { key:'thriller', title:'Thriller' },
+  { key:'war', title:'War' },
+  { key:'western', title:'Western' },
+  { key:'nollywood', title:'Nollywood' },
+  { key:'bollywood', title:'Bollywood' },
+  { key:'hollywood', title:'Hollywood' },
+  { key:'soaps', title:'Soaps' },
+  { key:'18plus', title:'18+ (Restricted)' }
+];
+
+/* small helpers */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+function saveAll(){ localStorage.setItem('mb_recent', JSON.stringify(state.recent)); localStorage.setItem('mb_watchlist', JSON.stringify(state.watchlist)); localStorage.setItem('mb_favorites', JSON.stringify(state.favorites)); localStorage.setItem('mb_saved_trailers', JSON.stringify(state.savedTrailers)); localStorage.setItem('mb_adultUnlocked', JSON.stringify(state.adultUnlocked)); }
+function escapeHtml(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeJs(s){ return (s||'').toString().replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+
+/* Build quick category buttons */
+function buildQuickCats(){
+  const wrap = $('#quickCats'); wrap.innerHTML = '';
+  CATEGORY_LIST.forEach(cat => {
+    const b = document.createElement('button'); b.className='cat-btn'; b.textContent=cat.title;
+    b.onclick = ()=> scrollToCategory(cat.key);
+    wrap.appendChild(b);
+  });
+}
+
+/* Scroll to specific category section */
+function scrollToCategory(key){
+  const el = document.getElementById('cat-'+key);
+  if(!el) return;
+  const offset = el.getBoundingClientRect().top + window.scrollY - 120;
+  window.scrollTo({ top: offset, behavior: 'smooth' });
+}
+
+/* Build all carousels skeleton */
+function buildCarousels(){
+  const parent = $('#carouselsArea'); parent.innerHTML = '';
+  CATEGORY_LIST.forEach(cat => {
+    const section = document.createElement('div'); section.className='section'; section.id = 'cat-'+cat.key;
+    section.innerHTML = `<div class="head"><h3>${escapeHtml(cat.title)}</h3></div>
+      <div class="carousel"><div class="arrow left" onclick="scrollRow('${cat.key}', -520)">◀</div><div id="row-${cat.key}" class="row"></div><div class="arrow right" onclick="scrollRow('${cat.key}', 520)">▶</div></div>`;
+    parent.appendChild(section);
+  });
+}
+
+/* Row scroll helper */
+function scrollRow(key, delta){ const r = document.getElementById('row-'+key); if(r) r.scrollBy({ left: delta, behavior: 'smooth' }); }
+
+/* Create movie card element */
+function createCard(m){
+  const title = m.title || m.name || 'Untitled';
+  const poster = m.poster_path ? IMG_BASE + m.poster_path : (m.profile_path ? IMG_BASE + m.profile_path : PLACEHOLDER);
+  const release = m.release_date || m.first_air_date || '';
+  const id = m.id;
+  const adult = !!m.adult || (title && title.toLowerCase().includes('18'));
+  const card = document.createElement('div'); card.className='card';
+  card.innerHTML = `
+    <img src="${poster}" alt="${escapeHtml(title)}" loading="lazy">
+    <div class="meta"><div class="title">${escapeHtml(title)}</div><div class="sub">${escapeHtml(release)}</div></div>
+    <div class="card-actions">
+      <button title="Trailer" onclick="event.stopPropagation(); openTrailerFromCard(${id})">🎞</button>
+      <button title="Favorite" onclick="event.stopPropagation(); toggleFavoriteFromCard(${id},'${escapeJs(title)}')">★</button>
+      <button title="Watchlist" onclick="event.stopPropagation(); toggleBookmarkFromCard(${id},'${escapeJs(title)}')">＋</button>
+    </div>`;
+  card.addEventListener('click', ()=> {
+    if(adult && !state.adultUnlocked[id]) showAdultGate(id);
+    else openDetails(id);
+  });
+  return card;
+}
+
+/* Load all categories (auto) */
+async function loadAllCategories(){
+  buildCarousels(); buildQuickCats();
+  for(const cat of CATEGORY_LIST){
+    await loadCategory(cat.key);
+  }
+  await loadFeatured();
+}
+
+/* Load one category (TMDb search/discover) */
+async function loadCategory(key){
+  const row = document.getElementById('row-'+key);
+  if(!row) return;
+  row.innerHTML = ''; row.appendChild(createSpinner());
+  try{
+    let results = [];
+    if(key === 'trending'){
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb API key required</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+      const j = await r.json(); results = j.results || [];
+    } else if(key === 'nollywood' || key === 'bollywood' || key === 'hollywood'){
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const q = key === 'nollywood' ? 'Nollywood' : (key==='bollywood'?'Bollywood':'Hollywood');
+      const r = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}&page=1`);
+      const j = await r.json(); results = j.results || [];
+    } else if(key === '18plus'){
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&include_adult=true&page=1`);
+      const j = await r.json(); results = (j.results||[]).filter(x => x.adult || (x.title && x.title.toLowerCase().includes('18'))).slice(0,30);
+    } else {
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const queries = {
+        action:'action', adventure:'adventure', animation:'animation', comedy:'comedy', crime:'crime',
+        documentary:'documentary', drama:'drama', family:'family', fantasy:'fantasy', history:'history',
+        horror:'horror', music:'music', mystery:'mystery', romance:'romance', 'sci-fi':'science fiction',
+        'tv-movie':'tv movie', thriller:'thriller', war:'war', western:'western', soaps:'soap opera'
+      };
+      const q = queries[key] || key;
+      const r = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}&page=1`);
+      const j = await r.json(); results = j.results || [];
+    }
+    row.innerHTML = '';
+    if(results.length === 0) row.innerHTML = `<div style="color:var(--muted);padding:8px">No items</div>`;
+    results.slice(0,30).forEach(m => row.appendChild(createCard(m)));
+  }catch(err){
+    row.innerHTML = `<div style="color:var(--muted);padding:8px">Failed to load</div>`;
+  }
+}
+
+/* Load hero (first trending) */
+async function loadFeatured(){
+  if(!TMDB_API_KEY){ $('#heroTitle').textContent = 'Add TMDb key to display featured'; return; }
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+    const j = await r.json(); const m = (j.results||[])[0];
+    if(!m) return;
+    const backdrop = m.backdrop_path ? `url(${IMG_BASE + m.backdrop_path})` : '';
+    $('#hero').style.backgroundImage = backdrop;
+    $('#heroTitle').textContent = m.title || m.name;
+    $('#heroSub').textContent = (m.overview || '').slice(0,220);
+    $('#heroWatchBtn').onclick = ()=> openExternalWatch(m.id);
+    $('#heroDownloadBtn').onclick = ()=> openExternalDownload(m.id);
+    $('#heroTrailerBtn').onclick = ()=> openTrailerFromCard(m.id);
+  }catch(e){}
+}
+
+/* Search (simple, used by earlier UI if you extend) */
+async function startSearch(q, t='movie'){
+  if(!q) return;
+  state.recent = [q, ...state.recent.filter(x=>x!==q)].slice(0,12); saveAll(); renderRecent();
+  // add search section
+  const carArea = $('#carouselsArea');
+  const existing = document.getElementById('cat-search');
+  if(existing) existing.remove();
+  const block = document.createElement('div'); block.className='section'; block.id='cat-search';
+  block.innerHTML = `<div class="head"><h3>Search: ${escapeHtml(q)}</h3></div><div class="carousel"><div class="arrow left" onclick="scrollRow('search',-520)">◀</div><div id="row-search" class="row"></div><div class="arrow right" onclick="scrollRow('search',520)">▶</div></div>`;
+  carArea.insertAdjacentElement('afterbegin', block);
+  const row = document.getElementById('row-search'); row.appendChild(createSpinner());
+  try{
+    if(t==='person'){
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}&page=1`);
+      const j = await r.json(); const p = j.results && j.results[0];
+      if(!p){ row.innerHTML = `<div style="color:var(--muted)">No actor found</div>`; return; }
+      const cr = await fetch(`https://api.themoviedb.org/3/person/${p.id}/combined_credits?api_key=${TMDB_API_KEY}`);
+      const cd = await cr.json(); row.innerHTML=''; (cd.cast||[]).slice(0,50).forEach(m=> row.appendChild(createCard(m)));
+    } else if(t==='genre'){
+      await ensureGenres();
+      const gid = (window.__genreMap || {})[q.toLowerCase()];
+      if(!gid){ row.innerHTML = `<div style="color:var(--muted)">Unknown genre</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${gid}`);
+      const j = await r.json(); row.innerHTML=''; (j.results||[]).forEach(m=> row.appendChild(createCard(m)));
+    } else if(t==='imdb'){
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/find/${encodeURIComponent(q)}?api_key=${TMDB_API_KEY}&external_source=imdb_id`);
+      const j = await r.json(); const arr = [].concat(j.movie_results||[], j.tv_results||[], j.person_results||[]);
+      row.innerHTML=''; arr.forEach(a=> row.appendChild(createCard(a)));
+    } else {
+      if(!TMDB_API_KEY){ row.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+      const r = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(q)}&page=1`);
+      const j = await r.json(); row.innerHTML=''; (j.results||[]).forEach(m=> row.appendChild(createCard(m)));
+    }
+  }catch(err){ row.innerHTML = `<div style="color:var(--muted)">Search failed</div>`; }
+}
+
+/* Genre map util */
+async function ensureGenres(){
+  if(window.__genreMap) return window.__genreMap;
+  if(!TMDB_API_KEY) return {};
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}`);
+    const j = await r.json(); window.__genreMap = {}; window.__gidToName = {};
+    (j.genres||[]).forEach(g=>{ window.__genreMap[g.name.toLowerCase()] = g.id; window.__gidToName[g.id] = g.name; });
+    return window.__genreMap;
+  }catch(e){ return {}; }
+}
+
+/* Details page */
+async function openDetails(id){
+  showSection('details');
+  $('#detailTitle').textContent = 'Loading...';
+  $('#detailContainer').innerHTML = ''; $('#detailCast').innerHTML = ''; $('#detailSimilar').innerHTML = '';
+  try{
+    if(!TMDB_API_KEY){ $('#detailContainer').innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+    const r = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&append_to_response=videos,credits,similar`);
+    const d = await r.json(); state.current = { id, data: d };
+    renderDetail(d);
+  }catch(e){ $('#detailContainer').innerHTML = `<div style="color:var(--muted)">Load failed</div>`; }
+}
+
+function renderDetail(d){
+  const title = d.title || d.name || 'Untitled';
+  $('#detailTitle').textContent = title;
+  const poster = d.poster_path ? IMG_BASE + d.poster_path : PLACEHOLDER;
+  const backdrop = d.backdrop_path ? IMG_BASE + d.backdrop_path : '';
+  $('#detailContainer').style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.82)), url(${backdrop})`;
+  const genres = (d.genres||[]).map(g=>`<button class="cat-btn ghost" style="padding:6px 8px;margin-right:6px" onclick="filterGenre('${g.name}')">${g.name}</button>`).join('');
+  const trailerKey = getTrailerKey(d);
+  $('#detailContainer').innerHTML = `
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:0 0 240px"><img src="${poster}" style="width:100%;border-radius:8px"></div>
+      <div style="flex:1">
+        <div style="font-size:20px;font-weight:800">${escapeHtml(title)} <span style="color:var(--muted);font-size:13px">• ${d.release_date||''}</span></div>
+        <div style="margin-top:8px;color:var(--muted)">${escapeHtml(d.tagline||'')}</div>
+        <div style="margin-top:12px">${escapeHtml(d.overview||'No overview')}</div>
+        <div style="margin-top:10px">${genres}</div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="cat-btn" onclick="openTrailerModal('${trailerKey}','${escapeJs(title)}')">Play Trailer</button>
+          <button class="cat-btn ghost" onclick="openExternalWatch(${d.id})">Watch (external)</button>
+          <button class="cat-btn" onclick="openExternalDownload(${d.id})">Download (external)</button>
+          <button class="cat-btn ghost" id="detailFavBtn" onclick="toggleFavoriteCurrent()">${isFavorite(d.id)?'Remove Fav':'Favorite'}</button>
+          <button class="cat-btn ghost" id="detailWlBtn" onclick="toggleBookmarkCurrent()">${isBookmarked(d.id)?'Remove Watchlist':'Add Watchlist'}</button>
+        </div>
+        <div id="externalRatings" style="margin-top:10px;color:var(--muted)"></div>
+      </div>
+    </div>
+  `;
+  const cast = (d.credits && d.credits.cast) ? d.credits.cast.slice(0,8) : [];
+  if(cast.length){
+    $('#detailCast').innerHTML = `<h3>Top Cast</h3><div style="display:flex;gap:8px;flex-wrap:wrap">${cast.map(c=>`<div style="width:120px"><img src="${c.profile_path?IMG_BASE+c.profile_path:PLACEHOLDER}" style="width:100%;height:130px;object-fit:cover;border-radius:8px"/><div style="font-size:13px;margin-top:6px">${escapeHtml(c.name)}</div><div style="font-size:12px;color:var(--muted)">${escapeHtml(c.character||'')}</div></div>`).join('')}</div>`;
+  } else $('#detailCast').innerHTML = '';
+  const similar = (d.similar && d.similar.results) ? d.similar.results.slice(0,12) : [];
+  if(similar.length) $('#detailSimilar').innerHTML = `<h3>Similar</h3><div class="row">${similar.map(m=>`<div class="card" onclick="openDetails(${m.id})"><img src="${m.poster_path?IMG_BASE+m.poster_path:PLACEHOLDER}"/><div class="meta"><div class="title">${escapeHtml(m.title)}</div><div class="sub">${m.release_date||''}</div></div></div>`).join('')}</div>`; else $('#detailSimilar').innerHTML='';
+  if(OMDB_API_KEY && d.imdb_id){
+    fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${d.imdb_id}`).then(r=>r.json()).then(j=>{
+      const imdb = j.imdbRating || '—'; const rt = (j.Ratings && j.Ratings.find(r=>r.Source==='Rotten Tomatoes')) ? j.Ratings.find(r=>r.Source==='Rotten Tomatoes').Value : '—';
+      $('#externalRatings').textContent = `IMDb: ${imdb} • Rotten Tomatoes: ${rt}`;
+    }).catch(()=>{ $('#externalRatings').textContent = 'External ratings unavailable'; });
+  } else { $('#externalRatings').textContent = `TMDb: ${d.vote_average || '—'}`; }
+  $('#detailFavBtn').textContent = isFavorite(d.id) ? 'Remove Fav' : 'Favorite';
+  $('#detailWlBtn').textContent = isBookmarked(d.id) ? 'Remove Watchlist' : 'Add Watchlist';
+}
+
+/* get trailer key */
+function getTrailerKey(d){ if(!d.videos || !d.videos.results) return null; const pick = d.videos.results.find(v=>v.site==='YouTube' && (v.type==='Trailer' || v.type==='Teaser')) || d.videos.results[0]; return pick ? pick.key : null; }
+
+/* Trailer modal open */
+function openTrailerModal(key, title){
+  if(!key) return alert('Trailer not available');
+  $('#trailerModal').style.display = 'flex';
+  $('#trailerCard').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">${escapeHtml(title)}</div><div><button class="cat-btn ghost" onclick="closeTrailerModal()">Close</button></div></div>
+    <div style="margin-top:10px"><iframe width="100%" height="420" src="https://www.youtube.com/embed/${key}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:8px"></iframe></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="cat-btn" onclick="saveTrailer('${key}','${escapeJs(title)}')">Save Trailer</button><button class="cat-btn ghost" onclick="downloadTrailer('${key}','${escapeJs(title)}')">Open on YouTube</button></div>`;
+}
+function closeTrailerModal(){ $('#trailerModal').style.display='none'; $('#trailerCard').innerHTML=''; }
+function saveTrailer(key,title){ if(state.savedTrailers.find(t=>t.key===key)){ alert('Saved'); return; } state.savedTrailers.push({key,title,savedAt:Date.now()}); saveAll(); alert('Trailer saved'); }
+function downloadTrailer(key){ window.open(`https://www.youtube.com/watch?v=${key}`,'_blank'); }
+async function openTrailerFromCard(id){
+  if(!TMDB_API_KEY) return alert('Add TMDb key');
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${TMDB_API_KEY}`);
+    const j = await r.json(); const pick = (j.results||[]).find(v=>v.site==='YouTube' && (v.type==='Trailer' || v.type==='Teaser')) || (j.results||[])[0];
+    if(!pick) return alert('Trailer not found');
+    openTrailerModal(pick.key, pick.name || 'Trailer');
+  }catch(e){ alert('Trailer fetch failed'); }
+}
+
+/* ----- EXTERNAL watch/download handlers ----- */
+/* open external watch site for a given movie id */
+function openExternalWatch(movieId){
+  const config = MOVIE_EXTERNAL_LINKS[String(movieId)];
+  if(config && config.watch){
+    window.open(config.watch, '_blank', 'noopener');
+    return;
+  }
+  // fallback: open default site (legal/public domain) in new tab
+  window.open(DEFAULT_EXTERNAL_SITE, '_blank', 'noopener');
+}
+
+/* open external download URL for given movie id */
+function openExternalDownload(movieId){
+  const config = MOVIE_EXTERNAL_LINKS[String(movieId)];
+  if(config && config.download){
+    // if direct file link, open in new tab (browser will download or play depending on headers)
+    window.open(config.download, '_blank', 'noopener');
+    return;
+  }
+  // fallback: open default downloads page
+  window.open(DEFAULT_EXTERNAL_DOWNLOAD, '_blank', 'noopener');
+}
+
+/* Bookmarks / favorites (localStorage) */
+function isBookmarked(id){ return state.watchlist.some(w=>w.id===id); }
+function toggleBookmarkFromCard(id,title){ const found = state.watchlist.find(w=>w.id===id); if(found) state.watchlist = state.watchlist.filter(w=>w.id!==id); else state.watchlist.push({id,title,addedAt:Date.now()}); saveAll(); renderWatchlistArea(); }
+function toggleBookmarkCurrent(){ if(!state.current) return; const d = state.current.data; toggleBookmarkFromCard(d.id, d.title||d.name); $('#detailWlBtn').textContent = isBookmarked(d.id) ? 'Remove Watchlist' : 'Add Watchlist'; }
+function renderWatchlistArea(){ const area = $('#watchlistArea'); area.innerHTML=''; state.watchlist.forEach(w=>{ const div=document.createElement('div'); div.className='card'; div.style.minWidth='220px'; div.innerHTML = `<img src="${PLACEHOLDER}"><div class="meta"><div class="title">${escapeHtml(w.title)}</div><div class="sub">${new Date(w.addedAt).toLocaleDateString()}</div></div>`; div.onclick = ()=> openDetails(w.id); area.appendChild(div); }); }
+
+function isFavorite(id){ return state.favorites.some(f=>f.id===id); }
+function toggleFavoriteFromCard(id,title){ const f = state.favorites.find(x=>x.id===id); if(f) state.favorites = state.favorites.filter(x=>x.id!==id); else state.favorites.push({id,title,addedAt:Date.now()}); saveAll(); renderFavoritesArea(); }
+function toggleFavoriteCurrent(){ if(!state.current) return; const d = state.current.data; toggleFavoriteFromCard(d.id, d.title||d.name); $('#detailFavBtn').textContent = isFavorite(d.id) ? 'Remove Fav' : 'Favorite'; }
+function renderFavoritesArea(){ const area = $('#favoritesArea'); area.innerHTML=''; state.favorites.forEach(f=>{ const div=document.createElement('div'); div.className='card'; div.style.minWidth='220px'; div.innerHTML = `<img src="${PLACEHOLDER}"><div class="meta"><div class="title">${escapeHtml(f.title)}</div><div class="sub">${new Date(f.addedAt).toLocaleDateString()}</div></div>`; div.onclick = ()=> openDetails(f.id); area.appendChild(div); }); }
+
+/* export/import watchlist */
+function exportWatchlist(){ const blob = new Blob([JSON.stringify(state.watchlist,null,2)],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='watchlist.json'; a.click(); URL.revokeObjectURL(url); }
+function importWatchlist(){ const inp = document.createElement('input'); inp.type='file'; inp.accept='application/json'; inp.onchange = e => { const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload = ev => { try{ const arr = JSON.parse(ev.target.result); if(Array.isArray(arr)){ state.watchlist = arr; saveAll(); renderWatchlistArea(); alert('Imported'); } else alert('Invalid file'); }catch(err){ alert('Import failed: '+err.message); } }; r.readAsText(f); }; inp.click(); }
+function clearWatchlist(){ if(confirm('Clear watchlist?')){ state.watchlist = []; saveAll(); renderWatchlistArea(); } }
+function clearFavorites(){ if(confirm('Clear favorites?')){ state.favorites = []; saveAll(); renderFavoritesArea(); } }
+
+/* Adult gate */
+function showAdultGate(movieId){
+  const root = $('#modalRoot'); root.style.display='block'; root.innerHTML = `<div class="modal-back" style="display:flex"><div class="modal-card" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between"><div style="font-weight:800">Restricted — 18+</div><div><button class="cat-btn ghost" onclick="closeModalRoot()">Close</button></div></div><div style="margin-top:10px;color:var(--muted)">This content is for adults only. Are you 18 years or older?</div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="cat-btn" onclick="unlockAdult(${movieId})">Yes — I'm 18+</button><button class="cat-btn ghost" onclick="closeModalRoot()">No</button></div></div></div>`; }
+function unlockAdult(id){ state.adultUnlocked[id]=true; saveAll(); closeModalRoot(); openDetails(id); }
+function closeModalRoot(){ $('#modalRoot').innerHTML=''; $('#modalRoot').style.display='none'; }
+
+/* Utility: filter by genre */
+function filterGenre(name){ startSearch(name,'genre'); const el = document.getElementById('cat-search'); if(el) scrollToCategory('search'); }
+
+/* section switching */
+function showSection(name){
+  ['home','details','watchlist','favorites','trending'].forEach(s=>{ const el = document.getElementById(s); if(el) el.style.display = (s===name ? (s==='home' ? 'block' : 'block') : 'none'); });
+  scrollToTop();
+}
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* trending grid */
+async function renderTrendingGrid(){
+  const g = $('#trendingGrid'); if(!g) return; g.innerHTML=''; g.appendChild(createSpinner());
+  if(!TMDB_API_KEY){ g.innerHTML = `<div style="color:var(--muted)">TMDb key required</div>`; return; }
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+    const j = await r.json(); g.innerHTML = ''; (j.results||[]).slice(0,60).forEach(m=> g.appendChild(createCard(m)));
+  }catch(e){ g.innerHTML = `<div style="color:var(--muted)">Failed to load</div>`; }
+}
+
+/* render recent */
+function renderRecent(){ /* placeholder area not in UI; left for future */ }
+
+/* spinner */
+function createSpinner(){ const d = document.createElement('div'); d.className='spinner'; return d; }
+
+/* init and PWA */
+async function init(){
+  buildQuickCats(); buildCarousels();
+  renderWatchlistArea(); renderFavoritesArea();
+  await loadAllCategories();
+  await renderTrendingGrid();
+  registerServiceWorker();
+}
+init();
+
+/* PWA inline service worker & manifest */
+function registerServiceWorker(){
+  if('serviceWorker' in navigator){
+    const swCode = `
+      const CACHE = 'mb-cache-v1';
+      self.addEventListener('install', e => self.skipWaiting());
+      self.addEventListener('activate', e => self.clients.claim());
+      self.addEventListener('fetch', e => {
+        if(e.request.url.includes('api.themoviedb.org') || e.request.url.includes('omdbapi.com')) {
+          return e.respondWith(fetch(e.request).catch(()=> caches.match('/')));
+        }
+        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res=>{ const c=res.clone(); caches.open(CACHE).then(cache=>cache.put(e.request, c)); return res; }).catch(()=> caches.match('/'))));
+      });
+    `;
+    const blob = new Blob([swCode], {type:'text/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+  }
+  const manifest = { name:"MERAB & BRIAN CINEMA SYSTEM 2025", short_name:"MB Cinema", start_url:".", display:"standalone", background_color:"#000", theme_color:"#0b1020", icons:[{src:"https://files.catbox.moe/b2xl1t.jpg",sizes:"192x192",type:"image/png"},{src:"https://files.catbox.moe/b2xl1t.jpg",sizes:"512x512",type:"image/png"}] };
+  const mBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); const mURL = URL.createObjectURL(mBlob); const link = document.createElement('link'); link.rel='manifest'; link.href = mURL; document.head.appendChild(link);
+}
+
+/* expose minimal API for console debug */
+window.mb = { state, loadCategory, loadAllCategories, openDetails, startSearch };
+
+/* small helper to create spinner element for reuse */
+function createSpinner(){ const d = document.createElement('div'); d.className='spinner'; return d; }
+</script>
+</body>
+</html>
